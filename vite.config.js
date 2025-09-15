@@ -1,8 +1,7 @@
-// vite.config.js
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react()],
-  base: '/SkillTreeDiary/', // ← 這裡改成你的 repo 名稱
-})
+  base: command === "build" ? "/SkillTreeDiary/" : "/",  // 👈 build 才用子路徑
+}));
