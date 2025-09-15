@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react";
 
 function App() {
@@ -7,14 +5,14 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-
-      const res = await fetch("/api/skills"); 
-      const data = await res.json();
-      setData(data);
-      
-      const json = await res.json();
-      setData(json);
-
+      try {
+        const res = await fetch("/api/skills");   // 呼叫 Vercel proxy
+        const json = await res.json();            // 解析一次就夠
+        setData(json);
+      } catch (err) {
+        console.error("抓取失敗:", err);
+        setData({ error: err.message });
+      }
     }
     fetchData();
   }, []);
@@ -23,8 +21,6 @@ function App() {
     <div>
       <h1>Notion API 測試</h1>
       <pre>{JSON.stringify(data, null, 2)}</pre>
-      <p>{import.meta.env.VITE_NOTION_TOKEN}</p>
-      <p>{import.meta.env.VITE_SKILLS_DB_ID}</p>
     </div>
   );
 }
