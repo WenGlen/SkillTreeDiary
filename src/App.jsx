@@ -90,124 +90,130 @@ function App() {
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      {/* 左側技能盤 */}
-<div style={{ flex: "3", position: "relative", background: "#000" }}>
-  <svg
-    width="800"
-    height="800"
-    style={{ background: "#000" }}
-    onClick={handleBackgroundClick}
-  >
-    {/* 畫線 */}
-    {placedNodes.map(
-      (node) =>
-        node.parentId && (
-          <line
-            key={`${node.id}-line`}
-            x1={placedNodes.find((n) => n.id === node.parentId)?.x}
-            y1={placedNodes.find((n) => n.id === node.parentId)?.y}
-            x2={node.x}
-            y2={node.y}
-            stroke="#666"
-            strokeWidth="4"
-          />
-        )
-    )}
+    <div >
+      <h1 style={{ textAlign: "center" }}>Skill Tree Diary</h1>
 
-    {/* 畫點 + 文字 */}
-    {placedNodes.map((node) => (
-      <g key={node.id}>
-        <circle
-          cx={node.x}
-          cy={node.y}
-          r="16"
-          fill={node.level === 1 ? "#999999" : node.level === 2 ? "#666666" : "#333333"}
-          stroke="white"
-          strokeWidth="1"
-          style={{
-            transition: "transform 0.2s ease",
-            cursor: "pointer",
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            setActiveSkill(node);
-          }}
-        />
-        {/* 技能名稱移到圓圈下方 */}
-        <text
-          x={node.x}
-          y={node.y + 40}
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="white"
-          fontSize="11"
-          pointerEvents="none"
-        >
-          {node.name}
-        </text>
-      </g>
-    ))}
-  </svg>
-</div>
+      <div style={{ display: "flex" }}>
+        <div style={{ width: "40px" }}></div>
+        {/* 左側技能盤 */}
+        <div style={{ flex: "3", position: "relative", background: "#000" }}>
+          <svg
+            width="800"
+            height="800"
+            style={{ background: "#000" }}
+            onClick={handleBackgroundClick}
+          >
+            {/* 畫線 */}
+            {placedNodes.map(
+              (node) =>
+                node.parentId && (
+                  <line
+                    key={`${node.id}-line`}
+                    x1={placedNodes.find((n) => n.id === node.parentId)?.x}
+                    y1={placedNodes.find((n) => n.id === node.parentId)?.y}
+                    x2={node.x}
+                    y2={node.y}
+                    stroke="#666"
+                    strokeWidth="4"
+                  />
+                )
+            )}
 
-{/* 右側資訊欄 */}
-<div
-  style={{
-    width: "300px",
-    borderLeft: "1px solid #333",
-    padding: "10px",
-    background: "#111",   // 深色背景
-    color: "white",
-    display: "flex",
-    flexDirection: "column",
-  }}
->
-  {/* 技能說明 */}
-  <div
-    style={{
-      minHeight: "200px",
-      marginBottom: "20px",
-      padding: "10px",
-      background: "#1f2937", // 深灰
-      border: "1px solid #333",
-      borderRadius: "8px",
-    }}
-  >
-    {activeSkill ? (
-      <>
-        <h3 style={{ marginTop: 0, color: "#fff" }}>{activeSkill.name}</h3>
-        <p style={{ fontSize: "12px", color: "#bbb" }}>
-          {activeSkill.description || "尚無描述"}
-        </p>
-        {activeSkill.level === 3 && activeSkill.children.length > 0 && (
-          <ul style={{ fontSize: "12px", paddingLeft: "16px", color: "#ddd" }}>
-            {activeSkill.children.map((c) => (
-              <li key={c.id}>{c.name}</li>
+            {/* 畫點 + 文字 */}
+            {placedNodes.map((node) => (
+              <g key={node.id}>
+                <circle
+                  cx={node.x}
+                  cy={node.y}
+                  r="16"
+                  fill={node.level === 1 ? "#999999" : node.level === 2 ? "#666666" : "#333333"}
+                  stroke="white"
+                  strokeWidth="1"
+                  style={{
+                    transition: "transform 0.2s ease",
+                    cursor: "pointer",
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveSkill(node);
+                  }}
+                />
+                {/* 技能名稱移到圓圈下方 */}
+                <text
+                  x={node.x}
+                  y={node.y + 40}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fill="white"
+                  fontSize="11"
+                  pointerEvents="none"
+                >
+                  {node.name}
+                </text>
+              </g>
             ))}
-          </ul>
-        )}
-      </>
-    ) : (
-      <p style={{ fontSize: "12px", color: "#666" }}>點擊技能以查看詳細資訊</p>
-    )}
-  </div>
+          </svg>
+        </div>
 
-  {/* 日記區 */}
-  <div>
-    <h2 style={{ color: "#fff" }}>日記區</h2>
-    <p style={{ fontSize: "12px", color: "#999" }}>
-      這裡將顯示與技能相關的日記內容（之後串 API）
-    </p>
-    <ul style={{ color: "#ddd" }}>
-      <li>日記 1</li>
-      <li>日記 2</li>
-      <li>日記 3</li>
-    </ul>
-  </div>
-</div>
+        {/* 右側資訊欄 */}
+        <div
+          style={{
+            width: "300px",
+            borderLeft: "1px solid #333",
+            padding: "10px",
+            background: "#111",   // 深色背景
+            color: "white",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {/* 技能說明 */}
+          <div
+            style={{
+              minHeight: "200px",
+              marginBottom: "20px",
+              padding: "10px",
+              background: "#1f2937", // 深灰
+              border: "1px solid #333",
+              borderRadius: "8px",
+            }}
+          >
+            {activeSkill ? (
+              <>
+                <h3 style={{ marginTop: 0, color: "#fff" }}>{activeSkill.name}</h3>
+                <p style={{ fontSize: "12px", color: "#bbb" }}>
+                  {activeSkill.description || "尚無描述"}
+                </p>
+                {activeSkill.level === 3 && activeSkill.children.length > 0 && (
+                  <ul style={{ fontSize: "12px", paddingLeft: "16px", color: "#ddd" }}>
+                    {activeSkill.children.map((c) => (
+                      <li key={c.id}>{c.name}</li>
+                    ))}
+                  </ul>
+                )}
+              </>
+            ) : (
+              <p style={{ fontSize: "12px", color: "#666" }}>點擊技能以查看詳細資訊</p>
+            )}
+          </div>
 
+          {/* 日記區 */}
+          <div>
+            <h2 style={{ color: "#fff" }}>日記區</h2>
+            <p style={{ fontSize: "12px", color: "#999" }}>
+              這裡將顯示與技能相關的日記內容（之後串 API）
+            </p>
+            <ul style={{ color: "#ddd" }}>
+              <li>日記 1</li>
+              <li>日記 2</li>
+              <li>日記 3</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p style={{ textAlign: "center" }}>Prototype v0.2-3</p>
     </div>
+
   );
 }
 
