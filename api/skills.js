@@ -13,6 +13,12 @@ export default async function handler(req, res) {
     );
 
     const data = await notionRes.json();
+
+    // 🔑 加上 CORS header，允許 localhost 也能抓
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
     res.status(200).json(data);
   } catch (err) {
     res.status(500).json({ error: "Proxy error", details: err.message });

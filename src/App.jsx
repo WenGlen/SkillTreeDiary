@@ -6,7 +6,7 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch("/api/skills"); // 呼叫 Vercel proxy
+        const res = await fetch("https://skill-tree-diary.vercel.app/api/skills"); // 呼叫 Vercel proxy
         const json = await res.json();
         console.log("API 回傳:", json); // 除錯用
         setData(json);
