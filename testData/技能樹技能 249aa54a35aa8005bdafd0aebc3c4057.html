@@ -1,0 +1,689 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>技能樹技能</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(142, 139, 134, 1);
+	fill: rgba(142, 139, 134, 1);
+}
+.highlight-brown {
+	color: rgba(182, 137, 101, 1);
+	fill: rgba(182, 137, 101, 1);
+}
+.highlight-orange {
+	color: rgba(213, 128, 59, 1);
+	fill: rgba(213, 128, 59, 1);
+}
+.highlight-yellow {
+	color: rgba(229, 178, 68, 1);
+	fill: rgba(229, 178, 68, 1);
+}
+.highlight-teal {
+	color: rgba(85, 167, 124, 1);
+	fill: rgba(85, 167, 124, 1);
+}
+.highlight-blue {
+	color: rgba(35, 131, 226, 1);
+	fill: rgba(35, 131, 226, 1);
+}
+.highlight-purple {
+	color: rgba(181, 119, 214, 1);
+	fill: rgba(181, 119, 214, 1);
+}
+.highlight-pink {
+	color: rgba(219, 105, 153, 1);
+	fill: rgba(219, 105, 153, 1);
+}
+.highlight-red {
+	color: rgba(229, 100, 88, 1);
+	fill: rgba(229, 100, 88, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.highlight-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.highlight-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.highlight-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.highlight-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.highlight-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.highlight-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(142, 139, 134, 1);
+	fill: rgba(142, 139, 134, 1);
+}
+.block-color-brown {
+	color: rgba(182, 137, 101, 1);
+	fill: rgba(182, 137, 101, 1);
+}
+.block-color-orange {
+	color: rgba(213, 128, 59, 1);
+	fill: rgba(213, 128, 59, 1);
+}
+.block-color-yellow {
+	color: rgba(229, 178, 68, 1);
+	fill: rgba(229, 178, 68, 1);
+}
+.block-color-teal {
+	color: rgba(85, 167, 124, 1);
+	fill: rgba(85, 167, 124, 1);
+}
+.block-color-blue {
+	color: rgba(35, 131, 226, 1);
+	fill: rgba(35, 131, 226, 1);
+}
+.block-color-purple {
+	color: rgba(181, 119, 214, 1);
+	fill: rgba(181, 119, 214, 1);
+}
+.block-color-pink {
+	color: rgba(219, 105, 153, 1);
+	fill: rgba(219, 105, 153, 1);
+}
+.block-color-red {
+	color: rgba(229, 100, 88, 1);
+	fill: rgba(229, 100, 88, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="249aa54a-35aa-8005-bdaf-d0aebc3c4057" class="page sans"><header><div class="page-header-icon undefined"><img class="icon" src="https://www.notion.so/icons/archery_yellow.svg"/></div><h1 class="page-title">技能樹技能</h1><p class="page-description"></p></header><div class="page-body"><table class="collection-content"><thead><tr><th><span class="icon property-icon"><div data-testid="/icons/font_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/font_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/font_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span>Skill-Name</th><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span> Skill-Description</th><th><span class="icon property-icon"><div data-testid="/icons/arrow-northeast_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/arrow-northeast_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/arrow-northeast_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span>Parent-Skill</th><th><span class="icon property-icon"><div data-testid="/icons/arrow-northeast_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/arrow-northeast_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/arrow-northeast_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span>Child-Skill</th><th><span class="icon property-icon"><div data-testid="/icons/checkmark-square_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/checkmark-square_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/checkmark-square_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span>Merge-State</th><th><span class="icon property-icon"><div data-testid="/icons/hashtag_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/hashtag_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/hashtag_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span>DisplayOrder</th><th><span class="icon property-icon"><div data-testid="/icons/numero_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/numero_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/numero_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span>Skill-Slug</th><th><span class="icon property-icon"><div data-testid="/icons/arrow-northeast_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/arrow-northeast_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/arrow-northeast_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span>Diarys</th><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span>note</th><th><span class="icon property-icon"><div data-testid="/icons/search_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/search_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/search_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span>Parent-Skill-Slug</th></tr></thead><tbody><tr id="249aa54a-35aa-8089-ab60-eafd51582c2f"><td class="cell-title"><a href="https://www.notion.so/249aa54a35aa8089ab60eafd51582c2f?pvs=21"><span class="icon">🟦</span>設計</a></td><td class="cell-wM?m">包含使用者體驗與視覺美感等面向，旨在創造出符合使用者需求並具備良好視覺呈現的產品或服務。</td><td class="cell-\WUQ"></td><td class="cell-ScYk"><a href="https://www.notion.so/25baa54a35aa80879154c52c631ad787?pvs=21"><span class="icon">🔵</span>使用者體驗</a>, <a href="https://www.notion.so/25baa54a35aa80c5abf2c610b479144a?pvs=21"><span class="icon">🔵</span>視覺美感</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL">2</td><td class="cell-cXh=">SK-2</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw"></td></tr><tr id="25baa54a-35aa-8087-9154-c52c631ad787"><td class="cell-title"><a href="https://www.notion.so/25baa54a35aa80879154c52c631ad787?pvs=21"><span class="icon">🔵</span>使用者體驗</a></td><td class="cell-wM?m">專注於提升使用者在使用產品或服務時的整體感受，確保其易用性、有效性與滿意度。</td><td class="cell-\WUQ"><a href="https://www.notion.so/249aa54a35aa8089ab60eafd51582c2f?pvs=21"><span class="icon">🟦</span>設計</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-43</td><td class="cell-=Zw:"><a href="https://www.notion.so/26eaa54a35aa804b8a42ccc93b918e03?pvs=21">簡單的設計最直覺</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-2</td></tr><tr id="25baa54a-35aa-80c5-abf2-c610b479144a"><td class="cell-title"><a href="https://www.notion.so/25baa54a35aa80c5abf2c610b479144a?pvs=21"><span class="icon">🔵</span>視覺美感</a></td><td class="cell-wM?m">著重於產品或服務的視覺呈現，包含色彩、排版、圖形等元素，以創造吸引人且和諧的介面。</td><td class="cell-\WUQ"><a href="https://www.notion.so/249aa54a35aa8089ab60eafd51582c2f?pvs=21"><span class="icon">🟦</span>設計</a></td><td class="cell-ScYk"><a href="https://www.notion.so/25baa54a35aa8015a580d3b9eeb428cd?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_blue.svg"/>風格敏銳度</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-42</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-2</td></tr><tr id="25baa54a-35aa-8015-a580-d3b9eeb428cd"><td class="cell-title"><a href="https://www.notion.so/25baa54a35aa8015a580d3b9eeb428cd?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_blue.svg"/>風格敏銳度</a></td><td class="cell-wM?m">具備對不同設計風格的理解與識別能力，並能將其應用於視覺設計中，創造出符合特定風格的作品。</td><td class="cell-\WUQ"><a href="https://www.notion.so/25baa54a35aa80c5abf2c610b479144a?pvs=21"><span class="icon">🔵</span>視覺美感</a></td><td class="cell-ScYk"><a href="https://www.notion.so/25baa54a35aa80e29d23d93ae4ebe067?pvs=21">風格判斷</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-44</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-42</td></tr><tr id="25baa54a-35aa-80e2-9d23-d93ae4ebe067"><td class="cell-title"><a href="https://www.notion.so/25baa54a35aa80e29d23d93ae4ebe067?pvs=21">風格判斷</a></td><td class="cell-wM?m">能夠在多種設計風格中做出適切的選擇，並判斷其是否符合專案需求與目標受眾的喜好。</td><td class="cell-\WUQ"><a href="https://www.notion.so/25baa54a35aa8015a580d3b9eeb428cd?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_blue.svg"/>風格敏銳度</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-45</td><td class="cell-=Zw:"><a href="https://www.notion.so/UI-25baa54a35aa80009456dac634775f16?pvs=21">做自己的 UI 設計</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-44</td></tr><tr id="249aa54a-35aa-807a-ba31-d3238cb465d9"><td class="cell-title"><a href="https://www.notion.so/249aa54a35aa807aba31d3238cb465d9?pvs=21"><span class="icon">⬛</span>專案管理</a></td><td class="cell-wM?m">涵蓋工具引入、文件處理、控管能力與人性理解，旨在有效規劃、執行與監控專案，以達成目標。</td><td class="cell-\WUQ"><a href="https://www.notion.so/254aa54a35aa8027bdf9d14500b1b548?pvs=21"><span class="icon">⚫</span>工具引入</a></td><td class="cell-ScYk"><a href="https://www.notion.so/249aa54a35aa80ce8e17ddfc8fac34e5?pvs=21"><span class="icon">⚫</span>文件處理</a>, <a href="https://www.notion.so/24daa54a35aa80b8b102d7e6eb69ec3c?pvs=21"><span class="icon">⚫</span>控管能力</a>, <a href="https://www.notion.so/250aa54a35aa8038af49da67ac6ba725?pvs=21"><span class="icon">⚫</span>人性理解</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL">4</td><td class="cell-cXh=">SK-4</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-29</td></tr><tr id="254aa54a-35aa-8027-bdf9-d14500b1b548"><td class="cell-title"><a href="https://www.notion.so/254aa54a35aa8027bdf9d14500b1b548?pvs=21"><span class="icon">⚫</span>工具引入</a></td><td class="cell-wM?m">具備評估、選擇與導入適合專案的工具能力，以提升工作效率與專案管理效能。</td><td class="cell-\WUQ"></td><td class="cell-ScYk"><a href="https://www.notion.so/249aa54a35aa807aba31d3238cb465d9?pvs=21"><span class="icon">⬛</span>專案管理</a>, <a href="https://www.notion.so/AI-254aa54a35aa8096897beeb849f47634?pvs=21">AI 工具</a>, <a href="https://www.notion.so/254aa54a35aa80ddb085e754d4705aaf?pvs=21">自動化工具</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-29</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw"></td></tr><tr id="254aa54a-35aa-8096-897b-eeb849f47634"><td class="cell-title"><a href="https://www.notion.so/AI-254aa54a35aa8096897beeb849f47634?pvs=21">AI 工具</a></td><td class="cell-wM?m">熟悉各種人工智慧工具的應用，並能將其整合至工作流程中，以提升效率與決策品質。</td><td class="cell-\WUQ"><a href="https://www.notion.so/254aa54a35aa8027bdf9d14500b1b548?pvs=21"><span class="icon">⚫</span>工具引入</a></td><td class="cell-ScYk"><a href="https://www.notion.so/Gemini-254aa54a35aa80149146d8b276dacd5f?pvs=21">Gemini</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-30</td><td class="cell-=Zw:"><a href="https://www.notion.so/254aa54a35aa80d08105c57ec0e81e90?pvs=21">修流程比訂流程重要</a>, <a href="https://www.notion.so/AI-25caa54a35aa802caa0ed427bb6da584?pvs=21">用 AI 學習的陷阱</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-29</td></tr><tr id="254aa54a-35aa-8014-9146-d8b276dacd5f"><td class="cell-title"><a href="https://www.notion.so/Gemini-254aa54a35aa80149146d8b276dacd5f?pvs=21">Gemini</a></td><td class="cell-wM?m">掌握 Gemini 的功能與應用，能運用其進行內容生成、資料分析等任務，提升工作效率。</td><td class="cell-\WUQ"><a href="https://www.notion.so/AI-254aa54a35aa8096897beeb849f47634?pvs=21">AI 工具</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-33</td><td class="cell-=Zw:"><a href="https://www.notion.so/Gemini-249aa54a35aa800d9822ff45b921f5d6?pvs=21">測 Gemini</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-30</td></tr><tr id="254aa54a-35aa-80dd-b085-e754d4705aaf"><td class="cell-title"><a href="https://www.notion.so/254aa54a35aa80ddb085e754d4705aaf?pvs=21">自動化工具</a></td><td class="cell-wM?m">具備運用自動化工具的能力，能將重複性任務自動化，以節省時間與資源。</td><td class="cell-\WUQ"><a href="https://www.notion.so/254aa54a35aa8027bdf9d14500b1b548?pvs=21"><span class="icon">⚫</span>工具引入</a></td><td class="cell-ScYk"><a href="https://www.notion.so/n8n-254aa54a35aa80698a74e7c674c62826?pvs=21">n8n</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-31</td><td class="cell-=Zw:"><a href="https://www.notion.so/254aa54a35aa801e8ac5efa8835db62e?pvs=21">自動化流程設計</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-29</td></tr><tr id="254aa54a-35aa-8069-8a74-e7c674c62826"><td class="cell-title"><a href="https://www.notion.so/n8n-254aa54a35aa80698a74e7c674c62826?pvs=21">n8n</a></td><td class="cell-wM?m">熟悉 n8n 的操作與應用，能建立自動化工作流程，串接不同應用程式與服務。</td><td class="cell-\WUQ"><a href="https://www.notion.so/254aa54a35aa80ddb085e754d4705aaf?pvs=21">自動化工具</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-32</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-31</td></tr><tr id="250aa54a-35aa-8038-af49-da67ac6ba725"><td class="cell-title"><a href="https://www.notion.so/250aa54a35aa8038af49da67ac6ba725?pvs=21"><span class="icon">⚫</span>人性理解</a></td><td class="cell-wM?m">具備洞察人性的能力，能理解團隊成員與利害關係人的需求與動機，有助於專案溝通與協作。</td><td class="cell-\WUQ"><a href="https://www.notion.so/249aa54a35aa807aba31d3238cb465d9?pvs=21"><span class="icon">⬛</span>專案管理</a></td><td class="cell-ScYk"><a href="https://www.notion.so/250aa54a35aa80babbc1de14d02b561a?pvs=21">自我覺察</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-22</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-4</td></tr><tr id="250aa54a-35aa-80ba-bbc1-de14d02b561a"><td class="cell-title"><a href="https://www.notion.so/250aa54a35aa80babbc1de14d02b561a?pvs=21">自我覺察</a></td><td class="cell-wM?m">能夠清楚認識自己的優缺點、情緒與行為模式，有助於個人成長與團隊協作。</td><td class="cell-\WUQ"><a href="https://www.notion.so/250aa54a35aa8038af49da67ac6ba725?pvs=21"><span class="icon">⚫</span>人性理解</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-23</td><td class="cell-=Zw:"><a href="https://www.notion.so/250aa54a35aa80f28880f791b40e5c1a?pvs=21">過度在意隱性問題</a>, <a href="https://www.notion.so/25baa54a35aa80728758f78be265a6ad?pvs=21">突然覺得學技能跟學知識是互斥的</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-22</td></tr><tr id="24daa54a-35aa-80b8-b102-d7e6eb69ec3c"><td class="cell-title"><a href="https://www.notion.so/24daa54a35aa80b8b102d7e6eb69ec3c?pvs=21"><span class="icon">⚫</span>控管能力</a></td><td class="cell-wM?m">包含進度可視化、成本控管與心力調配，旨在有效掌握專案進度、資源與風險。</td><td class="cell-\WUQ"><a href="https://www.notion.so/249aa54a35aa807aba31d3238cb465d9?pvs=21"><span class="icon">⬛</span>專案管理</a></td><td class="cell-ScYk"><a href="https://www.notion.so/24daa54a35aa801e9308f5c2ef294ec2?pvs=21">進度可視化</a>, <a href="https://www.notion.so/252aa54a35aa8003934afc67506a9dc5?pvs=21">成本控管</a>, <a href="https://www.notion.so/252aa54a35aa806c8743ef224c258c57?pvs=21">心力調配</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-17</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-4</td></tr><tr id="252aa54a-35aa-8003-934a-fc67506a9dc5"><td class="cell-title"><a href="https://www.notion.so/252aa54a35aa8003934afc67506a9dc5?pvs=21">成本控管</a></td><td class="cell-wM?m">具備有效管理專案預算的能力，確保資源的合理分配與運用，避免超支。</td><td class="cell-\WUQ"><a href="https://www.notion.so/24daa54a35aa80b8b102d7e6eb69ec3c?pvs=21"><span class="icon">⚫</span>控管能力</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-24</td><td class="cell-=Zw:"><a href="https://www.notion.so/MVP-252aa54a35aa80258468c646a7de646e?pvs=21">MVP 概念</a>, <a href="https://www.notion.so/MVP-252aa54a35aa8071a032f5c4cd25b655?pvs=21">MVP 的複雜度</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-17</td></tr><tr id="252aa54a-35aa-806c-8743-ef224c258c57"><td class="cell-title"><a href="https://www.notion.so/252aa54a35aa806c8743ef224c258c57?pvs=21">心力調配</a></td><td class="cell-wM?m">能夠有效分配個人精力與時間，應對專案壓力與挑戰，維持工作效率與身心健康。</td><td class="cell-\WUQ"><a href="https://www.notion.so/24daa54a35aa80b8b102d7e6eb69ec3c?pvs=21"><span class="icon">⚫</span>控管能力</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-28</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-17</td></tr><tr id="24daa54a-35aa-801e-9308-f5c2ef294ec2"><td class="cell-title"><a href="https://www.notion.so/24daa54a35aa801e9308f5c2ef294ec2?pvs=21">進度可視化</a></td><td class="cell-wM?m">能夠將專案進度以清晰易懂的方式呈現，讓團隊成員與利害關係人能即時掌握專案狀況。</td><td class="cell-\WUQ"><a href="https://www.notion.so/24daa54a35aa80b8b102d7e6eb69ec3c?pvs=21"><span class="icon">⚫</span>控管能力</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-18</td><td class="cell-=Zw:"><a href="https://www.notion.so/24daa54a35aa80459617eda758126518?pvs=21">文件要視狀況分內外部</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-17</td></tr><tr id="249aa54a-35aa-80ce-8e17-ddfc8fac34e5"><td class="cell-title"><a href="https://www.notion.so/249aa54a35aa80ce8e17ddfc8fac34e5?pvs=21"><span class="icon">⚫</span>文件處理</a></td><td class="cell-wM?m">具備撰寫格式文件的能力，能有效組織與管理專案文件，確保資訊的清晰與準確。</td><td class="cell-\WUQ"><a href="https://www.notion.so/249aa54a35aa807aba31d3238cb465d9?pvs=21"><span class="icon">⬛</span>專案管理</a></td><td class="cell-ScYk"><a href="https://www.notion.so/249aa54a35aa80ef97d0ed025ea988f5?pvs=21">撰寫格式文件</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-6</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-4</td></tr><tr id="249aa54a-35aa-80ef-97d0-ed025ea988f5"><td class="cell-title"><a href="https://www.notion.so/249aa54a35aa80ef97d0ed025ea988f5?pvs=21">撰寫格式文件</a></td><td class="cell-wM?m">能夠撰寫符合規範與標準的文件，確保資訊的完整性、一致性與可讀性。</td><td class="cell-\WUQ"><a href="https://www.notion.so/249aa54a35aa80ce8e17ddfc8fac34e5?pvs=21"><span class="icon">⚫</span>文件處理</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-7</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-6</td></tr><tr id="249aa54a-35aa-806e-9ca5-f64c3a5fcf3e"><td class="cell-title"><a href="https://www.notion.so/249aa54a35aa806e9ca5f64c3a5fcf3e?pvs=21"><span class="icon">🟧</span>企劃</a></td><td class="cell-wM?m">包含遊戲企劃與工具企劃，旨在發想、規劃與執行各類專案，以達成特定目標。</td><td class="cell-\WUQ"></td><td class="cell-ScYk"><a href="https://www.notion.so/249aa54a35aa8027ab98c458b26cad69?pvs=21"><span class="icon">🟠</span>遊戲企劃</a>, <a href="https://www.notion.so/24daa54a35aa80a3b273c6d1fb41a370?pvs=21"><span class="icon">🟠</span>工具企劃</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL">3</td><td class="cell-cXh=">SK-3</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw"></td></tr><tr id="24daa54a-35aa-80a3-b273-c6d1fb41a370"><td class="cell-title"><a href="https://www.notion.so/24daa54a35aa80a3b273c6d1fb41a370?pvs=21"><span class="icon">🟠</span>工具企劃</a></td><td class="cell-wM?m">專注於工具的發想、設計與開發，旨在提供使用者更有效率、更便捷的解決方案。</td><td class="cell-\WUQ"><a href="https://www.notion.so/249aa54a35aa806e9ca5f64c3a5fcf3e?pvs=21"><span class="icon">🟧</span>企劃</a></td><td class="cell-ScYk"><a href="https://www.notion.so/24daa54a35aa8052a9d8f399113a2a28?pvs=21">滾動修正</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-15</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-3</td></tr><tr id="24daa54a-35aa-8052-a9d8-f399113a2a28"><td class="cell-title"><a href="https://www.notion.so/24daa54a35aa8052a9d8f399113a2a28?pvs=21">滾動修正</a></td><td class="cell-wM?m">具備在專案執行過程中，根據回饋與變化，持續調整與優化企劃內容的能力。</td><td class="cell-\WUQ"><a href="https://www.notion.so/24daa54a35aa80a3b273c6d1fb41a370?pvs=21"><span class="icon">🟠</span>工具企劃</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-16</td><td class="cell-=Zw:"><a href="https://www.notion.so/24daa54a35aa8011a738d040d1356d11?pvs=21">喜歡做小工具</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-15</td></tr><tr id="249aa54a-35aa-8027-ab98-c458b26cad69"><td class="cell-title"><a href="https://www.notion.so/249aa54a35aa8027ab98c458b26cad69?pvs=21"><span class="icon">🟠</span>遊戲企劃</a></td><td class="cell-wM?m">專注於遊戲的發想、設計與開發，包含遊戲體驗分析與建立基礎架構，旨在創造引人入勝的遊戲體驗。</td><td class="cell-\WUQ"><a href="https://www.notion.so/249aa54a35aa806e9ca5f64c3a5fcf3e?pvs=21"><span class="icon">🟧</span>企劃</a></td><td class="cell-ScYk"><a href="https://www.notion.so/24aaa54a35aa809aba9cdcc2b8647cfe?pvs=21">遊戲體驗分析</a>, <a href="https://www.notion.so/24aaa54a35aa80a38761ddf5c1fdd384?pvs=21">建立基礎架構</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-5</td><td class="cell-=Zw:"><a href="https://www.notion.so/AI-249aa54a35aa80bda9a1d56621efba19?pvs=21">用 AI 企劃技能樹架構</a>, <a href="https://www.notion.so/252aa54a35aa80e49263da7d73ef8dac?pvs=21">重想企劃</a>, <a href="https://www.notion.so/SomeWhere-252aa54a35aa80d1970aedd898919006?pvs=21">發想SomeWhere</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-3</td></tr><tr id="24aaa54a-35aa-80a3-8761-ddf5c1fdd384"><td class="cell-title"><a href="https://www.notion.so/24aaa54a35aa80a38761ddf5c1fdd384?pvs=21">建立基礎架構</a></td><td class="cell-wM?m">具備設計與搭建遊戲核心系統與框架的能力，為遊戲的開發提供穩固的基石。</td><td class="cell-\WUQ"><a href="https://www.notion.so/249aa54a35aa8027ab98c458b26cad69?pvs=21"><span class="icon">🟠</span>遊戲企劃</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-10</td><td class="cell-=Zw:"><a href="https://www.notion.so/249aa54a35aa80409bafea4664a2a2e6?pvs=21">開始寫技能樹</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-5</td></tr><tr id="24aaa54a-35aa-809a-ba9c-dcc2b8647cfe"><td class="cell-title"><a href="https://www.notion.so/24aaa54a35aa809aba9cdcc2b8647cfe?pvs=21">遊戲體驗分析</a></td><td class="cell-wM?m">能夠深入分析遊戲的各個層面，理解玩家的行為與感受，並據此優化遊戲體驗。</td><td class="cell-\WUQ"><a href="https://www.notion.so/249aa54a35aa8027ab98c458b26cad69?pvs=21"><span class="icon">🟠</span>遊戲企劃</a></td><td class="cell-ScYk"><a href="https://www.notion.so/24aaa54a35aa8074bd11efc122e6b954?pvs=21">分析預期心理</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-8</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-5</td></tr><tr id="24aaa54a-35aa-8074-bd11-efc122e6b954"><td class="cell-title"><a href="https://www.notion.so/24aaa54a35aa8074bd11efc122e6b954?pvs=21">分析預期心理</a></td><td class="cell-wM?m">具備分析玩家心理預期的能力，能預測玩家行為，並設計符合玩家期待的遊戲內容。</td><td class="cell-\WUQ"><a href="https://www.notion.so/24aaa54a35aa809aba9cdcc2b8647cfe?pvs=21">遊戲體驗分析</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-9</td><td class="cell-=Zw:"><a href="https://www.notion.so/249aa54a35aa8082a770fe41d1fd7400?pvs=21">盲抽遊戲體驗</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-8</td></tr><tr id="249aa54a-35aa-8000-8ce4-ff7d1b897099"><td class="cell-title"><a href="https://www.notion.so/249aa54a35aa80008ce4ff7d1b897099?pvs=21"><span class="icon">🟨</span>程式</a></td><td class="cell-wM?m">包含架構規劃、寫 code 技巧與使用體驗強化，旨在運用程式語言開發軟體、系統或應用程式。</td><td class="cell-\WUQ"></td><td class="cell-ScYk"><a href="https://www.notion.so/24aaa54a35aa80888982e8fc0a9cda39?pvs=21"><span class="icon">🟡</span>架構規劃</a>, <a href="https://www.notion.so/code-24caa54a35aa80488992cc7a2281091b?pvs=21"><span class="icon">🟡</span>寫 code 技巧</a>, <a href="https://www.notion.so/250aa54a35aa8070810ecdafefc9e583?pvs=21"><span class="icon">🟡</span>使用體驗強化</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL">1</td><td class="cell-cXh=">SK-1</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw"></td></tr><tr id="24aaa54a-35aa-8088-8982-e8fc0a9cda39"><td class="cell-title"><a href="https://www.notion.so/24aaa54a35aa80888982e8fc0a9cda39?pvs=21"><span class="icon">🟡</span>架構規劃</a></td><td class="cell-wM?m">具備設計軟體或系統整體架構的能力，確保其穩定性、擴展性與效能。</td><td class="cell-\WUQ"><a href="https://www.notion.so/249aa54a35aa80008ce4ff7d1b897099?pvs=21"><span class="icon">🟨</span>程式</a></td><td class="cell-ScYk"><a href="https://www.notion.so/Coding-24baa54a35aa80a1adc6ecbfd6097c10?pvs=21">Coding 排版邏輯</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-11</td><td class="cell-=Zw:"><a href="https://www.notion.so/250aa54a35aa807a908add63d383f98c?pvs=21">我要寫自己的架構手冊</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-1</td></tr><tr id="24baa54a-35aa-80a1-adc6-ecbfd6097c10"><td class="cell-title"><a href="https://www.notion.so/Coding-24baa54a35aa80a1adc6ecbfd6097c10?pvs=21">Coding 排版邏輯</a></td><td class="cell-wM?m">具備良好的程式碼排版習慣與邏輯思維，能撰寫清晰、易讀且易於維護的程式碼。</td><td class="cell-\WUQ"><a href="https://www.notion.so/24aaa54a35aa80888982e8fc0a9cda39?pvs=21"><span class="icon">🟡</span>架構規劃</a></td><td class="cell-ScYk"><a href="https://www.notion.so/Coding-250aa54a35aa80978373df6ddf27adc9?pvs=21">動畫 Coding 架構</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-12</td><td class="cell-=Zw:"><a href="https://www.notion.so/scss-24aaa54a35aa80c39b46de34a8c89388?pvs=21">scss 屬性分組排版</a>, <a href="https://www.notion.so/tailwind-26eaa54a35aa8097b6d5f722495043e6?pvs=21">我流的 tailwind 排版</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-11</td></tr><tr id="250aa54a-35aa-8097-8373-df6ddf27adc9"><td class="cell-title"><a href="https://www.notion.so/Coding-250aa54a35aa80978373df6ddf27adc9?pvs=21">動畫 Coding 架構</a></td><td class="cell-wM?m">具備設計與實作動畫程式碼架構的能力，能創造流暢、互動性佳的動畫效果。</td><td class="cell-\WUQ"><a href="https://www.notion.so/Coding-24baa54a35aa80a1adc6ecbfd6097c10?pvs=21">Coding 排版邏輯</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-19</td><td class="cell-=Zw:"><a href="https://www.notion.so/debug-de-24faa54a35aa802dba39d76ba0a2b70b?pvs=21">程式沒架構 debug de 到死</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-12</td></tr><tr id="24caa54a-35aa-8048-8992-cc7a2281091b"><td class="cell-title"><a href="https://www.notion.so/code-24caa54a35aa80488992cc7a2281091b?pvs=21"><span class="icon">🟡</span>寫 code 技巧</a></td><td class="cell-wM?m">包含除錯、應用熟練、語法熟練與架構熟練，旨在提升程式碼的品質與開發效率。</td><td class="cell-\WUQ"><a href="https://www.notion.so/249aa54a35aa80008ce4ff7d1b897099?pvs=21"><span class="icon">🟨</span>程式</a></td><td class="cell-ScYk"><a href="https://www.notion.so/24caa54a35aa801196d3d7fa8c7713e0?pvs=21">除錯</a>, <a href="https://www.notion.so/252aa54a35aa807ebebfc870af58c239?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>應用熟練</a>, <a href="https://www.notion.so/25baa54a35aa801ea9cbc8436e1b1e31?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>語法熟練</a>, <a href="https://www.notion.so/25baa54a35aa80a0a8b0c0f53e5e9b6c?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>架構熟練</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-13</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-1</td></tr><tr id="24caa54a-35aa-8011-96d3-d7fa8c7713e0"><td class="cell-title"><a href="https://www.notion.so/24caa54a35aa801196d3d7fa8c7713e0?pvs=21">除錯</a></td><td class="cell-wM?m">具備快速定位與解決程式碼錯誤的能力，確保軟體或系統的穩定運行。</td><td class="cell-\WUQ"><a href="https://www.notion.so/code-24caa54a35aa80488992cc7a2281091b?pvs=21"><span class="icon">🟡</span>寫 code 技巧</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-14</td><td class="cell-=Zw:"><a href="https://www.notion.so/AI-24caa54a35aa80a49490eac70c8c719f?pvs=21">AI 除錯，越除越錯</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-13</td></tr><tr id="252aa54a-35aa-807e-bebf-c870af58c239"><td class="cell-title"><a href="https://www.notion.so/252aa54a35aa807ebebfc870af58c239?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>應用熟練</a></td><td class="cell-wM?m">包含 API 串接、RWD、互動切換與文件引用，旨在熟練運用各種應用技術，提升程式碼的實用性。</td><td class="cell-\WUQ"><a href="https://www.notion.so/code-24caa54a35aa80488992cc7a2281091b?pvs=21"><span class="icon">🟡</span>寫 code 技巧</a></td><td class="cell-ScYk"><a href="https://www.notion.so/API-252aa54a35aa8010b1e7f48967036ae6?pvs=21">API 串接</a>, <a href="https://www.notion.so/RWD-250aa54a35aa8044b767f79703e981f8?pvs=21">RWD</a>, <a href="https://www.notion.so/25baa54a35aa80a0b1a2e628da11634e?pvs=21">互動切換</a>, <a href="https://www.notion.so/26eaa54a35aa80149661e0f3a7ab5193?pvs=21">文件引用</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-25</td><td class="cell-=Zw:"><a href="https://www.notion.so/JS-html-26eaa54a35aa80058823dcae538cf97c?pvs=21">JS 分段放 html 裡</a>, <a href="https://www.notion.so/26eaa54a35aa80cc8343ef565afff5f0?pvs=21">一些自己的小工具</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-13</td></tr><tr id="252aa54a-35aa-8010-b1e7-f48967036ae6"><td class="cell-title"><a href="https://www.notion.so/API-252aa54a35aa8010b1e7f48967036ae6?pvs=21">API 串接</a></td><td class="cell-wM?m">具備串接不同應用程式介面 (API) 的能力，實現資料交換與功能整合。</td><td class="cell-\WUQ"><a href="https://www.notion.so/252aa54a35aa807ebebfc870af58c239?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>應用熟練</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-26</td><td class="cell-=Zw:"><a href="https://www.notion.so/Google-sheet-API-252aa54a35aa80428d6dd911a1b4e08a?pvs=21">串 Google sheet 的 API</a>, <a href="https://www.notion.so/n8n-255aa54a35aa804a99c4fa53241d1b88?pvs=21">n8n</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-25</td></tr><tr id="250aa54a-35aa-8044-b767-f79703e981f8"><td class="cell-title"><a href="https://www.notion.so/RWD-250aa54a35aa8044b767f79703e981f8?pvs=21">RWD</a></td><td class="cell-wM?m">熟悉響應式網頁設計 (Responsive Web Design) 原理與實作，確保網頁在不同裝置上都能良好呈現。</td><td class="cell-\WUQ"><a href="https://www.notion.so/252aa54a35aa807ebebfc870af58c239?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>應用熟練</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-21</td><td class="cell-=Zw:"><a href="https://www.notion.so/RWD-250aa54a35aa802690d4c6df1e50e153?pvs=21">怎麼做 RWD</a>, <a href="https://www.notion.so/hover-RWD-26eaa54a35aa8084bf3cc1fc1cb6dcd0?pvs=21">hover 怎麼做 RWD</a>, <a href="https://www.notion.so/RWD-26eaa54a35aa80739a12eb867b2a4650?pvs=21">圖片的 RWD</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-25</td></tr><tr id="25baa54a-35aa-80a0-b1a2-e628da11634e"><td class="cell-title"><a href="https://www.notion.so/25baa54a35aa80a0b1a2e628da11634e?pvs=21">互動切換</a></td><td class="cell-wM?m">具備設計與實作使用者介面互動切換效果的能力，提升使用者體驗的流暢度與趣味性。</td><td class="cell-\WUQ"><a href="https://www.notion.so/252aa54a35aa807ebebfc870af58c239?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>應用熟練</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-39</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-25</td></tr><tr id="26eaa54a-35aa-8014-9661-e0f3a7ab5193"><td class="cell-title"><a href="https://www.notion.so/26eaa54a35aa80149661e0f3a7ab5193?pvs=21">文件引用</a></td><td class="cell-wM?m">具備在程式碼中正確引用外部文件或資源的能力，確保程式碼的模組化與可維護性。</td><td class="cell-\WUQ"><a href="https://www.notion.so/252aa54a35aa807ebebfc870af58c239?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>應用熟練</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-47</td><td class="cell-=Zw:"><a href="https://www.notion.so/26eaa54a35aa80f8a3ebd0dfd61e10eb?pvs=21">另外載入文案</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-25</td></tr><tr id="25baa54a-35aa-801e-a9cb-c8436e1b1e31"><td class="cell-title"><a href="https://www.notion.so/25baa54a35aa801ea9cbc8436e1b1e31?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>語法熟練</a></td><td class="cell-wM?m">包含 css/scss、tailwind、Bootstrap 5、JavaScript 與 APP script，旨在熟練掌握各種程式語言與框架的語法。</td><td class="cell-\WUQ"><a href="https://www.notion.so/code-24caa54a35aa80488992cc7a2281091b?pvs=21"><span class="icon">🟡</span>寫 code 技巧</a></td><td class="cell-ScYk"><a href="https://www.notion.so/css-scss-25baa54a35aa80e3a9f8fa483454574a?pvs=21">css/scss</a>, <a href="https://www.notion.so/tailwind-25baa54a35aa8001af3adff0c15547a3?pvs=21">tailwind</a>, <a href="https://www.notion.so/Bootstrap-5-25baa54a35aa80b89a52d85c0136b62f?pvs=21">Bootstrap 5</a>, <a href="https://www.notion.so/JavaScript-26eaa54a35aa80329ef5c93cbdb9bb80?pvs=21">JavaScript</a>, <a href="https://www.notion.so/APP-script-26eaa54a35aa8008bf7df200cf49939d?pvs=21">APP script</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-34</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-13</td></tr><tr id="26eaa54a-35aa-8008-bf7d-f200cf49939d"><td class="cell-title"><a href="https://www.notion.so/APP-script-26eaa54a35aa8008bf7df200cf49939d?pvs=21">APP script</a></td><td class="cell-wM?m">熟悉 Google Apps Script 的語法與應用，能自動化 Google Workspace 相關任務。</td><td class="cell-\WUQ"><a href="https://www.notion.so/25baa54a35aa801ea9cbc8436e1b1e31?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>語法熟練</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-49</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-34</td></tr><tr id="25baa54a-35aa-80e3-a9f8-fa483454574a"><td class="cell-title"><a href="https://www.notion.so/css-scss-25baa54a35aa80e3a9f8fa483454574a?pvs=21">css/scss</a></td><td class="cell-wM?m">熟練掌握 CSS 與 SCSS 語法，能設計與實作網頁樣式，提升視覺呈現。</td><td class="cell-\WUQ"><a href="https://www.notion.so/25baa54a35aa801ea9cbc8436e1b1e31?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>語法熟練</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-37</td><td class="cell-=Zw:"><a href="https://www.notion.so/slider-26eaa54a35aa8085a12dc3ea20bdaec7?pvs=21">slider 的切換效果</a>, <a href="https://www.notion.so/26eaa54a35aa80cea491e061de46846c?pvs=21">按鈕定位</a>, <a href="https://www.notion.so/card-26eaa54a35aa8089a0e6ea11c374c7b2?pvs=21">card 的滑動效果</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-34</td></tr><tr id="26eaa54a-35aa-8032-9ef5-c93cbdb9bb80"><td class="cell-title"><a href="https://www.notion.so/JavaScript-26eaa54a35aa80329ef5c93cbdb9bb80?pvs=21">JavaScript</a></td><td class="cell-wM?m">熟練掌握 JavaScript 語法，能開發互動式網頁與應用程式，提升使用者體驗。</td><td class="cell-\WUQ"><a href="https://www.notion.so/25baa54a35aa801ea9cbc8436e1b1e31?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>語法熟練</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-46</td><td class="cell-=Zw:"><a href="https://www.notion.so/JS-26eaa54a35aa804e9e24d7d68426d9d0?pvs=21">用 JS 計算容器高度</a>, <a href="https://www.notion.so/slider-26eaa54a35aa80388bacd38b6333b33e?pvs=21">slider 的切換動畫</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-34</td></tr><tr id="25baa54a-35aa-80b8-9a52-d85c0136b62f"><td class="cell-title"><a href="https://www.notion.so/Bootstrap-5-25baa54a35aa80b89a52d85c0136b62f?pvs=21">Bootstrap 5</a></td><td class="cell-wM?m">熟悉 Bootstrap 5 框架，能快速建構響應式網頁介面，提升開發效率。</td><td class="cell-\WUQ"><a href="https://www.notion.so/25baa54a35aa801ea9cbc8436e1b1e31?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>語法熟練</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-41</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-34</td></tr><tr id="25baa54a-35aa-8001-af3a-dff0c15547a3"><td class="cell-title"><a href="https://www.notion.so/tailwind-25baa54a35aa8001af3adff0c15547a3?pvs=21">tailwind</a></td><td class="cell-wM?m">熟悉 Tailwind CSS 框架，能快速建構客製化網頁樣式，提升開發效率。</td><td class="cell-\WUQ"><a href="https://www.notion.so/25baa54a35aa801ea9cbc8436e1b1e31?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>語法熟練</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-40</td><td class="cell-=Zw:"><a href="https://www.notion.so/tailwind-25baa54a35aa80308535f5dbaab25f08?pvs=21">第一次接觸 tailwind 的感覺</a>, <a href="https://www.notion.so/tailwind-25caa54a35aa80c5963bf860fdb4d0c3?pvs=21">試寫 tailwind</a>, <a href="https://www.notion.so/tailwind-26eaa54a35aa8006b66be721af30b52b?pvs=21">有點喜歡上 tailwind</a>, <a href="https://www.notion.so/tailwind-269aa54a35aa80e1a9aedb8dea299268?pvs=21">實際開始實用 tailwind</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-34</td></tr><tr id="25baa54a-35aa-80a0-a8b0-c0f53e5e9b6c"><td class="cell-title"><a href="https://www.notion.so/25baa54a35aa80a0a8b0c0f53e5e9b6c?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>架構熟練</a></td><td class="cell-wM?m">包含 React 與 Vite，旨在熟練運用各種程式架構，提升開發效率與程式碼品質。</td><td class="cell-\WUQ"><a href="https://www.notion.so/code-24caa54a35aa80488992cc7a2281091b?pvs=21"><span class="icon">🟡</span>寫 code 技巧</a></td><td class="cell-ScYk"><a href="https://www.notion.so/React-252aa54a35aa8034a435c42e62c36a33?pvs=21">React</a>, <a href="https://www.notion.so/Vite-25baa54a35aa806dab59dcc56f24e4d8?pvs=21">Vite</a></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-35</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-13</td></tr><tr id="252aa54a-35aa-8034-a435-c42e62c36a33"><td class="cell-title"><a href="https://www.notion.so/React-252aa54a35aa8034a435c42e62c36a33?pvs=21">React</a></td><td class="cell-wM?m">熟練掌握 React 框架，能開發高效能、可擴展的單頁應用程式。</td><td class="cell-\WUQ"><a href="https://www.notion.so/25baa54a35aa80a0a8b0c0f53e5e9b6c?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>架構熟練</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-27</td><td class="cell-=Zw:"><a href="https://www.notion.so/react-252aa54a35aa80a1b48cfb39356a3405?pvs=21">react 開發</a></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-35</td></tr><tr id="25baa54a-35aa-806d-ab59-dcc56f24e4d8"><td class="cell-title"><a href="https://www.notion.so/Vite-25baa54a35aa806dab59dcc56f24e4d8?pvs=21">Vite</a></td><td class="cell-wM?m">熟悉 Vite 開發工具，能快速啟動開發伺服器，提升前端開發效率。</td><td class="cell-\WUQ"><a href="https://www.notion.so/25baa54a35aa80a0a8b0c0f53e5e9b6c?pvs=21"><img class="icon" src="https://www.notion.so/icons/circle-dot_yellow.svg"/>架構熟練</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-on"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-38</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-35</td></tr><tr id="250aa54a-35aa-8070-810e-cdafefc9e583"><td class="cell-title"><a href="https://www.notion.so/250aa54a35aa8070810ecdafefc9e583?pvs=21"><span class="icon">🟡</span>使用體驗強化</a></td><td class="cell-wM?m">專注於提升軟體或應用程式的使用者體驗，確保其易用性、直覺性與流暢度。</td><td class="cell-\WUQ"><a href="https://www.notion.so/249aa54a35aa80008ce4ff7d1b897099?pvs=21"><span class="icon">🟨</span>程式</a></td><td class="cell-ScYk"></td><td class="cell-}Jrs"><div class="checkbox checkbox-off"></div></td><td class="cell-&lt;\qL"></td><td class="cell-cXh=">SK-20</td><td class="cell-=Zw:"></td><td class="cell-jpDw"></td><td class="cell-Zqcw">SK-1</td></tr></tbody></table><br/><br/></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
