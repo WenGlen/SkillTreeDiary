@@ -241,7 +241,7 @@ function App() {
           </div>
         </div>
       </div>
-      <p style={{ textAlign: "center" }}>Prototype v0.2-3</p>
+      <p style={{ textAlign: "center" }}>Prototype v0.3-2</p>
     </div>
 
   );
