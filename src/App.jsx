@@ -24,6 +24,7 @@ function App() {
           parentId,
           description,
           children: [],
+          isMerged: item.properties?.["Merge-State"]?.checkbox || false
         };
 
         skillsMap[id] = skill;
@@ -33,7 +34,16 @@ function App() {
       const rootsTemp = [];
       Object.values(skillsMap).forEach((skill) => {
         if (skill.parentId && skillsMap[skill.parentId]) {
-          skillsMap[skill.parentId].children.push(skill);
+          if (skill.isMerged) {
+            // 放到 parent 的 mergedChildren
+            if (!skillsMap[skill.parentId].mergedChildren) {
+              skillsMap[skill.parentId].mergedChildren = [];
+            }
+            skillsMap[skill.parentId].mergedChildren.push(skill);
+          } else {
+            // 一般子技能
+            skillsMap[skill.parentId].children.push(skill);
+          }
         } else {
           rootsTemp.push(skill);
         }
@@ -54,6 +64,7 @@ function App() {
 
   // 遞迴排位置（最多到第三層）
   const placeNodes = (nodes, level, startAngle, endAngle, map) => {
+    const filteredNodes = nodes.filter((n) => !n.isMerged); // 🚨 過濾掉融合技能
     if (level > 3) return [];
     const placed = [];
     const angleStep = (endAngle - startAngle) / nodes.length;
@@ -178,23 +189,42 @@ function App() {
               borderRadius: "8px",
             }}
           >
-            {activeSkill ? (
-              <>
-                <h3 style={{ marginTop: 0, color: "#fff" }}>{activeSkill.name}</h3>
-                <p style={{ fontSize: "12px", color: "#bbb" }}>
-                  {activeSkill.description || "尚無描述"}
-                </p>
-                {activeSkill.level === 3 && activeSkill.children.length > 0 && (
-                  <ul style={{ fontSize: "12px", paddingLeft: "16px", color: "#ddd" }}>
-                    {activeSkill.children.map((c) => (
-                      <li key={c.id}>{c.name}</li>
-                    ))}
-                  </ul>
-                )}
-              </>
-            ) : (
-              <p style={{ fontSize: "12px", color: "#666" }}>點擊技能以查看詳細資訊</p>
-            )}
+{activeSkill ? (
+  <>
+    <h3 style={{ marginTop: 0, color: "#fff" }}>{activeSkill.name}</h3>
+    <p style={{ fontSize: "12px", color: "#bbb" }}>
+      {activeSkill.description || "尚無描述"}
+    </p>
+
+    {/* 顯示融合技能 */}
+    {activeSkill.mergedChildren && activeSkill.mergedChildren.length > 0 && (
+      <div style={{ marginTop: "12px" }}>
+        <h4 style={{ color: "#ccc", fontSize: "13px" }}>融合技能</h4>
+        <ul style={{ fontSize: "12px", paddingLeft: "16px", color: "#aaa" }}>
+          {activeSkill.mergedChildren.map((c) => (
+            <li key={c.id}>{c.name}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {/* （保留正常子技能展示，如果你要） */}
+    {activeSkill.children && activeSkill.children.length > 0 && (
+      <div style={{ marginTop: "12px" }}>
+        <h4 style={{ color: "#ccc", fontSize: "13px" }}>子技能</h4>
+        <ul style={{ fontSize: "12px", paddingLeft: "16px", color: "#ddd" }}>
+          {activeSkill.children.map((c) => (
+            <li key={c.id}>{c.name}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </>
+) : (
+  <p style={{ fontSize: "12px", color: "#666" }}>點擊技能以查看詳細資訊</p>
+)}
+
+
           </div>
 
           {/* 日記區 */}
