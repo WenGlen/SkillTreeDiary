@@ -41,11 +41,11 @@ export default async function handler(req, res) {
       const skills = props["Skills"]?.relation?.map((rel) => rel.id) || [];
 
       // diary-slug
-      const slug = props["diary-slug"]?.rich_text?.[0]?.plain_text || "";
+      const diarySlug = props["Diary-slug"]?.rich_text?.[0]?.plain_text || "";
 
       return {
         id: item.id,
-        slug,
+        diarySlug,
         name,
         date,
         content,
