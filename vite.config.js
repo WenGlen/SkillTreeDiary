@@ -5,3 +5,4 @@ export default defineConfig(({ command }) => ({
   plugins: [react()],
   base: command === "build" ? "/SkillTreeDiary/" : "/",  // 👈 build 才用子路徑
 }));
+
