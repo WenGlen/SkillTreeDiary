@@ -64,10 +64,10 @@ useEffect(() => {
 
       const mapped = json.results.map((item) => {
         const props = item.properties;                 // ✅ 只宣告一次
-        const eikStr = props["E-I-K"]?.rich_text?.[0]?.plain_text ?? "0-0-0";
+        const kieStr = props["K-I-E"]?.rich_text?.[0]?.plain_text ?? "0-0-0";
 
-        // 解析 E-I-K（E→I→K），並處理空白/非數字
-        const [e = 0, i = 0, k = 0] = eikStr
+        // 解析 K-I-E，並處理空白/非數字
+        const [k = 0, i = 0, e = 0] = kieStr
           .split("-")
           .map((s) => Number(String(s).trim()) || 0);
 
@@ -79,7 +79,7 @@ useEffect(() => {
             .map((t) => t.plain_text)
             .join(""),
           date: props["Created Date"]?.created_time || "",
-          eik: { e, i, k },                               // ✅ 統一用 e/i/k
+          kie: { k, i, e },                               // ✅ 統一用 e/i/k
           linkName: props["Link-Name"]?.rich_text?.[0]?.plain_text || "",
           linkUrl: props["Link-URL"]?.url || "",
           skills: (props["Skills"]?.relation ?? []).map((rel) => rel.id),
@@ -150,22 +150,22 @@ const skillsMap = useMemo(() => {
 }, [roots]);
 
 
-  //計算某個技能的總 E-I-K：
+  //計算某個技能的總 K-I-E：
 
   // roots = 整棵技能樹
   // diarys = 所有日記
-  function calcSkillEIK(skillId, roots, diarys) {
-    let totals = { e: 0, i: 0, k: 0 };
+  function calcSkillKIE(skillId, roots, diarys) {
+    let totals = { k: 0, i: 0, e: 0 };
 
     const collect = (nodeId, nodes) => {
       for (const node of nodes) {
         if (node.id === nodeId) {
           // 找日記加總
           diarys.forEach((d) => {
-            if (d.skills.includes(node.id) && d.eik) {
-              totals.e += d.eik.e || 0;
-              totals.i += d.eik.i || 0;
-              totals.k += d.eik.k || 0;
+            if (d.skills.includes(node.id) && d.kie) {
+              totals.k += d.kie.k || 0;
+              totals.i += d.kie.i || 0;
+              totals.e += d.kie.e || 0;
             }
           });
 
@@ -212,7 +212,7 @@ const skillsMap = useMemo(() => {
 
 
   // 在 return 之前加這段
-  const activeTotals = activeSkill ? calcSkillEIK(activeSkill.id, roots, diarys) : null;
+  const activeTotals = activeSkill ? calcSkillKIE(activeSkill.id, roots, diarys) : null;
 
       // 半徑計算函式
 function getRadius(sum) {
@@ -323,13 +323,13 @@ function getNonMergedDescendants(node) {
 {placedNodes.map((node) => {
   if (node.isMerged || node.level >= 4) return null; // 🚫 不畫整合/細化技能
 
-  const totals = calcSkillEIK(node.id, roots, diarys);
-  const sum = totals.k + totals.e + totals.i;
+  const totals = calcSkillKIE(node.id, roots, diarys);
+  const sum = totals.k + totals.i + totals.e;
   const radius = getRadius(sum);
 
-  // 計算邊線顏色（基礎灰 + EIK 疊加）
+  // 計算邊線顏色（基礎灰 + KIE 疊加）
 
-  const strokeColor = getStrokeColor(totals.e, totals.i, totals.k);
+  const strokeColor = getStrokeColor(totals.k, totals.i, totals.e);
 
   return (
     <g key={node.id}>
@@ -399,7 +399,7 @@ function getNonMergedDescendants(node) {
 
     // ✅ 用 map 逆推層級，避免 level 取不到
     const detailLevel = detail.level ?? getLevelFromMap(detail.id);
-    const totals = calcSkillEIK(detail.id, roots, diarys);
+    const totals = calcSkillKIE(detail.id, roots, diarys);
 
     // ✅ 細化技能：第 3 層才顯示，且要把所有「非整合」子孫列出
     const refinedList =
@@ -419,11 +419,11 @@ function getNonMergedDescendants(node) {
           <h3 style={{ margin: 0, color: "#fff" }}>{detail.name}</h3>
         )}
 
-        {/* E-I-K */}
+        {/* K-I-E */}
         <div style={{ fontSize: "12px", marginBottom: "6px" }}>
-          <span style={{ color: "#00aaaa" }}>E: {totals.e}　</span>
+          <span style={{ color: "#00aaaa" }}>K: {totals.k}　</span>
           <span style={{ color: "#aa00aa" }}>I: {totals.i}　</span>
-          <span style={{ color: "#aaaa00" }}>K: {totals.k}</span>
+          <span style={{ color: "#aaaa00" }}>E: {totals.e}</span>
         </div>
 
         {/* 描述 */}
@@ -438,7 +438,7 @@ function getNonMergedDescendants(node) {
             <ul style={{ fontSize: "12px", color: "#aaa", paddingLeft: "16px" }}>
               {detail.mergedChildren.map((c) => {
                 const child = skillsMap[c.id] || c;
-                const t = calcSkillEIK(child.id, roots, diarys);
+                const t = calcSkillKIE(child.id, roots, diarys);
                 return (
                   <li
                     key={child.id}
@@ -447,11 +447,11 @@ function getNonMergedDescendants(node) {
                   >
                     {child.name}　
                     <span> ( </span>
-                    <span style={{ color: "#00aaaa" }}>{t.e}</span>
+                    <span style={{ color: "#00aaaa" }}>{t.k}</span>
                     <span>-</span>
                     <span style={{ color: "#aa00aa" }}>{t.i}</span>
                     <span>-</span>
-                    <span style={{ color: "#aaaa00" }}>{t.k}</span>
+                    <span style={{ color: "#aaaa00" }}>{t.e}</span>
                     <span> ) </span>
                   </li>
                 );
@@ -466,7 +466,7 @@ function getNonMergedDescendants(node) {
             <h4 style={{ color: "#ccc", fontSize: "13px" }}>細化技能</h4>
             <ul style={{ fontSize: "12px", color: "#ddd", paddingLeft: "16px" }}>
               {refinedList.map((c) => {
-                const t = calcSkillEIK(c.id, roots, diarys);
+                const t = calcSkillKIE(c.id, roots, diarys);
                 return (
                   <li
                     key={c.id}
@@ -475,11 +475,11 @@ function getNonMergedDescendants(node) {
                   >
                     {c.name}　
                     <span> ( </span>
-                    <span style={{ color: "#00aaaa" }}>{t.e}</span>
+                    <span style={{ color: "#00aaaa" }}>{t.k}</span>
                     <span>-</span>
                     <span style={{ color: "#aa00aa" }}>{t.i}</span>
                     <span>-</span>
-                    <span style={{ color: "#aaaa00" }}>{t.k}</span>
+                    <span style={{ color: "#aaaa00" }}>{t.e}</span>
                     <span> ) </span>
                   </li>
                 );
@@ -503,9 +503,10 @@ function getNonMergedDescendants(node) {
           <div>
             <h2 style={{ color: "#fff" }}>日記區</h2>
             {relatedDiarys.length > 0 ? (
-              <ul style={{ color: "#ddd", fontSize: "12px" }}>
+              <ul style={{color: "#ddd", fontSize: "12px" , listStyle:"none",margin: "0", padding: "0"}}>
                 {relatedDiarys.map((d) => (
-                  <li key={d.id} style={{ marginBottom: "12px", cursor: "pointer" }}>
+                  <div style={{ marginBottom: "12px", background: "#222733" , borderRadius:"8px", padding: "8px"}}>
+                  <li key={d.id} style={{ margin: "0",marginLeft: "16px", cursor: "pointer"}}>
                     {/* 點擊標題切換展開/收合 */}
                     <div
                       onClick={() =>
@@ -514,14 +515,17 @@ function getNonMergedDescendants(node) {
                       style={{ fontWeight: "bold", color: "#fff" }}
                     >
                       {d.title} ({d.date.slice(0, 10)})
-                    </div>
+                    
 
-                    {/* E-I-K & Link */}
-                    {d.eik && (
+                    {/* K-I-E & Link */}
+                    {d.kie && (
                       <div style={{ fontSize: "11px" }}>
-                        E: {d.eik.e}　I: {d.eik.i}　K: {d.eik.k}
+                        <span style={{ color: "#00aaaa" }}>K: {d.kie.k}　</span>
+                        <span style={{ color: "#aa00aa" }}>I: {d.kie.i}　</span>
+                        <span style={{ color: "#aaaa00" }}>E: {d.kie.e}</span>
                       </div>
                     )}
+                    </div>
                     {d.linkUrl && (
                       <a
                         href={d.linkUrl}
@@ -540,6 +544,7 @@ function getNonMergedDescendants(node) {
                       </div>
                     )}
                   </li>
+                  </div>
                 ))}
               </ul>
 
@@ -549,7 +554,7 @@ function getNonMergedDescendants(node) {
           </div>
         </div>
       </div>
-      <p style={{ textAlign: "center" }}>Prototype v0.3</p>
+      <p style={{ textAlign: "center" }}>Prototype v1-1.0</p>
     </div>
   );
 }
