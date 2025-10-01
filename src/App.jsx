@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import ReactMarkdown from "react-markdown";
 
 function App() {
   const [roots, setRoots] = useState([]);
@@ -6,6 +7,7 @@ function App() {
   const [activeSkill, setActiveSkill] = useState(null);
   const [diarys, setDiarys] = useState([]);
   const [expandedDiaryId, setExpandedDiaryId] = useState(null);
+  const [showHelp, setShowHelp] = useState(false);
 
 
   // === 抓技能 DB ===
@@ -280,11 +282,11 @@ function getNonMergedDescendants(node) {
 
 
   return (
-    
     <div>
-      <h1 style={{ textAlign: "center" }}>Skill Tree Diary</h1>
-
-      <div style={{ display: "flex" }}>
+      <h1 style={{ textAlign: "center", marginTop: "20px",marginBottom: "20px" }}>Skill Tree Diary</h1>
+      
+      <div style={{ width: "100vw", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", }}>
+      <div style={{display: "flex" }}>
         <div style={{ width: "40px" }}></div>
 
         {/* 左側技能盤 */}
@@ -316,53 +318,50 @@ function getNonMergedDescendants(node) {
                 />
               );
             })}
-
             {/* 畫點 + 文字 */}
-{/* 畫點 + 文字 */}
-{/* 畫點 + 文字 */}
-{placedNodes.map((node) => {
-  if (node.isMerged || node.level >= 4) return null; // 🚫 不畫整合/細化技能
+            {placedNodes.map((node) => {
+              if (node.isMerged || node.level >= 4) return null; // 🚫 不畫整合/細化技能
 
-  const totals = calcSkillKIE(node.id, roots, diarys);
-  const sum = totals.k + totals.i + totals.e;
-  const radius = getRadius(sum);
+              const totals = calcSkillKIE(node.id, roots, diarys);
+              const sum = totals.k + totals.i + totals.e;
+              const radius = getRadius(sum);
 
-  // 計算邊線顏色（基礎灰 + KIE 疊加）
+              // 計算邊線顏色（基礎灰 + KIE 疊加）
 
-  const strokeColor = getStrokeColor(totals.k, totals.i, totals.e);
+              const strokeColor = getStrokeColor(totals.k, totals.i, totals.e);
 
-  return (
-    <g key={node.id}>
-      <circle
-        cx={node.x}
-        cy={node.y}
-        r={radius}
-        fill="#aaaaaa" // 中心固定灰
-        stroke={strokeColor}
-        strokeWidth={activeSkill?.id === node.id ? 4 : 2} // 點擊後邊框變粗
-        style={{
-          transition: "r 0.2s ease, transform 0.2s ease, stroke 0.3s ease",
-          cursor: "pointer",
-        }}
-        onClick={(e) => {
-          e.stopPropagation();
-          setActiveSkill(node);
-        }}
-      />
-      <text
-        x={node.x}
-        y={node.y + radius + 12}
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fill="white"
-        fontSize="11"
-        pointerEvents="none"
-      >
-        {node.name}
-      </text>
-    </g>
-  );
-})}
+              return (
+                <g key={node.id}>
+                  <circle
+                    cx={node.x}
+                    cy={node.y}
+                    r={radius}
+                    fill="#aaaaaa" // 中心固定灰
+                    stroke={strokeColor}
+                    strokeWidth={activeSkill?.id === node.id ? 4 : 2} // 點擊後邊框變粗
+                    style={{
+                      transition: "r 0.2s ease, transform 0.2s ease, stroke 0.3s ease",
+                      cursor: "pointer",
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveSkill(node);
+                    }}
+                  />
+                  <text
+                    x={node.x}
+                    y={node.y + radius + 12}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fill="white"
+                    fontSize="11"
+                    pointerEvents="none"
+                  >
+                    {node.name}
+                  </text>
+                </g>
+              );
+            })}
 
 
 
@@ -383,116 +382,116 @@ function getNonMergedDescendants(node) {
           }}
         >
           {/* 技能說明 */}
-<div
-  style={{
-    minHeight: "200px",
-    marginBottom: "20px",
-    padding: "10px",
-    background: "#1f2937",
-    border: "1px solid #333",
-    borderRadius: "8px",
-  }}
->
-  {activeSkill ? (() => {
-    const detail = skillsMap?.[activeSkill.id];
-    if (!detail) return null;
+        <div
+          style={{
+            minHeight: "200px",
+            marginBottom: "20px",
+            padding: "10px",
+            background: "#1f2937",
+            border: "1px solid #333",
+            borderRadius: "8px",
+          }}
+        >
+          {activeSkill ? (() => {
+            const detail = skillsMap?.[activeSkill.id];
+            if (!detail) return null;
 
-    // ✅ 用 map 逆推層級，避免 level 取不到
-    const detailLevel = detail.level ?? getLevelFromMap(detail.id);
-    const totals = calcSkillKIE(detail.id, roots, diarys);
+            // ✅ 用 map 逆推層級，避免 level 取不到
+            const detailLevel = detail.level ?? getLevelFromMap(detail.id);
+            const totals = calcSkillKIE(detail.id, roots, diarys);
 
-    // ✅ 細化技能：第 3 層才顯示，且要把所有「非整合」子孫列出
-    const refinedList =
-      detailLevel === 3 ? getNonMergedDescendants(detail).filter(s => !s.isMerged) : [];
+            // ✅ 細化技能：第 3 層才顯示，且要把所有「非整合」子孫列出
+            const refinedList =
+              detailLevel === 3 ? getNonMergedDescendants(detail).filter(s => !s.isMerged) : [];
 
-    return (
-      <>
-        {/* 標題（整合 or 第 4 層以上才顯示 parent） */}
-        {(detail.isMerged || detailLevel >= 4) ? (
-          <div>
-            <div style={{ fontSize: "11px", color: "#999", marginBottom: "2px" }}>
-              {skillsMap?.[detail.parentId]?.name || "父技能"}
-            </div>
-            <h3 style={{ margin: 0, color: "#fff" }}>↳ {detail.name}</h3>
-          </div>
-        ) : (
-          <h3 style={{ margin: 0, color: "#fff" }}>{detail.name}</h3>
-        )}
+            return (
+              <>
+                {/* 標題（整合 or 第 4 層以上才顯示 parent） */}
+                {(detail.isMerged || detailLevel >= 4) ? (
+                  <div>
+                    <div style={{ fontSize: "11px", color: "#999", marginBottom: "2px" }}>
+                      {skillsMap?.[detail.parentId]?.name || "父技能"}
+                    </div>
+                    <h3 style={{ margin: 0, color: "#fff" }}>↳ {detail.name}</h3>
+                  </div>
+                ) : (
+                  <h3 style={{ margin: 0, color: "#fff" }}>{detail.name}</h3>
+                )}
 
-        {/* K-I-E */}
-        <div style={{ fontSize: "12px", marginBottom: "6px" }}>
-          <span style={{ color: "#00aaaa" }}>K: {totals.k}　</span>
-          <span style={{ color: "#aa00aa" }}>I: {totals.i}　</span>
-          <span style={{ color: "#aaaa00" }}>E: {totals.e}</span>
+                {/* K-I-E */}
+                <div style={{ fontSize: "12px", marginBottom: "6px" }}>
+                  <span style={{ color: "#00aaaa" }}>K: {totals.k}　</span>
+                  <span style={{ color: "#aa00aa" }}>I: {totals.i}　</span>
+                  <span style={{ color: "#aaaa00" }}>E: {totals.e}</span>
+                </div>
+
+                {/* 描述 */}
+                <p style={{ fontSize: "12px", color: "#bbb" }}>
+                  {detail.description || "尚無描述"}
+                </p>
+
+                {/* 整合技能 */}
+                {detail.mergedChildren?.length > 0 && (
+                  <div style={{ marginTop: "12px" }}>
+                    <h4 style={{ color: "#ccc", fontSize: "13px" }}>整合技能</h4>
+                    <ul style={{ fontSize: "12px", color: "#aaa", paddingLeft: "16px" }}>
+                      {detail.mergedChildren.map((c) => {
+                        const child = skillsMap[c.id] || c;
+                        const t = calcSkillKIE(child.id, roots, diarys);
+                        return (
+                          <li
+                            key={child.id}
+                            style={{ cursor: "pointer", marginBottom: "8px" }}
+                            onClick={() => setActiveSkill(child)}
+                          >
+                            {child.name}　
+                            <span> ( </span>
+                            <span style={{ color: "#00aaaa" }}>{t.k}</span>
+                            <span>-</span>
+                            <span style={{ color: "#aa00aa" }}>{t.i}</span>
+                            <span>-</span>
+                            <span style={{ color: "#aaaa00" }}>{t.e}</span>
+                            <span> ) </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
+
+                {/* 細化技能（第 3 層＋所有非整合子孫） */}
+                {refinedList.length > 0 && (
+                  <div style={{ marginTop: "12px" }}>
+                    <h4 style={{ color: "#ccc", fontSize: "13px" }}>細化技能</h4>
+                    <ul style={{ fontSize: "12px", color: "#ddd", paddingLeft: "16px" }}>
+                      {refinedList.map((c) => {
+                        const t = calcSkillKIE(c.id, roots, diarys);
+                        return (
+                          <li
+                            key={c.id}
+                            style={{ cursor: "pointer", marginBottom: "8px" }}
+                            onClick={() => setActiveSkill(c)}
+                          >
+                            {c.name}　
+                            <span> ( </span>
+                            <span style={{ color: "#00aaaa" }}>{t.k}</span>
+                            <span>-</span>
+                            <span style={{ color: "#aa00aa" }}>{t.i}</span>
+                            <span>-</span>
+                            <span style={{ color: "#aaaa00" }}>{t.e}</span>
+                            <span> ) </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
+              </>
+            );
+          })() : (
+            <p style={{ fontSize: "12px", color: "#666" }}>點擊技能以查看詳細資訊</p>
+          )}
         </div>
-
-        {/* 描述 */}
-        <p style={{ fontSize: "12px", color: "#bbb" }}>
-          {detail.description || "尚無描述"}
-        </p>
-
-        {/* 整合技能 */}
-        {detail.mergedChildren?.length > 0 && (
-          <div style={{ marginTop: "12px" }}>
-            <h4 style={{ color: "#ccc", fontSize: "13px" }}>整合技能</h4>
-            <ul style={{ fontSize: "12px", color: "#aaa", paddingLeft: "16px" }}>
-              {detail.mergedChildren.map((c) => {
-                const child = skillsMap[c.id] || c;
-                const t = calcSkillKIE(child.id, roots, diarys);
-                return (
-                  <li
-                    key={child.id}
-                    style={{ cursor: "pointer", marginBottom: "8px" }}
-                    onClick={() => setActiveSkill(child)}
-                  >
-                    {child.name}　
-                    <span> ( </span>
-                    <span style={{ color: "#00aaaa" }}>{t.k}</span>
-                    <span>-</span>
-                    <span style={{ color: "#aa00aa" }}>{t.i}</span>
-                    <span>-</span>
-                    <span style={{ color: "#aaaa00" }}>{t.e}</span>
-                    <span> ) </span>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        )}
-
-        {/* 細化技能（第 3 層＋所有非整合子孫） */}
-        {refinedList.length > 0 && (
-          <div style={{ marginTop: "12px" }}>
-            <h4 style={{ color: "#ccc", fontSize: "13px" }}>細化技能</h4>
-            <ul style={{ fontSize: "12px", color: "#ddd", paddingLeft: "16px" }}>
-              {refinedList.map((c) => {
-                const t = calcSkillKIE(c.id, roots, diarys);
-                return (
-                  <li
-                    key={c.id}
-                    style={{ cursor: "pointer", marginBottom: "8px" }}
-                    onClick={() => setActiveSkill(c)}
-                  >
-                    {c.name}　
-                    <span> ( </span>
-                    <span style={{ color: "#00aaaa" }}>{t.k}</span>
-                    <span>-</span>
-                    <span style={{ color: "#aa00aa" }}>{t.i}</span>
-                    <span>-</span>
-                    <span style={{ color: "#aaaa00" }}>{t.e}</span>
-                    <span> ) </span>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        )}
-      </>
-    );
-  })() : (
-    <p style={{ fontSize: "12px", color: "#666" }}>點擊技能以查看詳細資訊</p>
-  )}
-</div>
 
 
 
@@ -539,8 +538,15 @@ function getNonMergedDescendants(node) {
 
                     {/* 展開內容 */}
                     {expandedDiaryId === d.id && (
-                      <div style={{ marginTop: "6px", fontSize: "12px", color: "#bbb" }}>
-                        {d.content || "（沒有內容）"}
+                      <div
+                        style={{
+                          marginTop: "6px",
+                          fontSize: "12px",
+                          color: "#ccc",
+                          lineHeight: "1.5",
+                        }}
+                      >
+                        <ReactMarkdown>{d.content || "（沒有內容）"}</ReactMarkdown>
                       </div>
                     )}
                   </li>
@@ -554,9 +560,116 @@ function getNonMergedDescendants(node) {
           </div>
         </div>
       </div>
-      <p style={{ textAlign: "center" }}>Prototype v1-1.0</p>
+      <p style={{ textAlign: "center" ,color: "#999" }}>Prototype v1-2.0</p>
+    
+
+      {/* 左下角的「？」按鈕 */}
+      <button
+        onClick={() => setShowHelp(true)}
+        className="help-button"
+        style={{
+          position: "fixed",
+          bottom: "40px",
+          left: "40px",
+          width: "30px",
+          height: "30px",
+          borderRadius: "50%",
+          fontSize: "16px",
+          fontWeight: "bold",
+          zIndex: 2000, // 確保在最上層
+        }}
+      >
+      ?
+      </button>
+
+      {/* 說明彈窗 */}
+      {showHelp && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "rgba(0,0,0,0.6)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+          onClick={() => setShowHelp(false)} // 點遮罩關閉
+        >
+          <div
+            style={{
+              width: "900px",
+              maxWidth: "90%",
+              background: "#1f2937",
+              color: "white",
+              padding: "40px",
+              borderRadius: "8px",
+              position: "relative",
+            }}
+            onClick={(e) => e.stopPropagation()} // 防止點內容關閉
+          >
+            {/* 關閉按鈕 */}
+            <button
+              onClick={() => setShowHelp(false)}
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                background: "transparent",
+                border: "none",
+                color: "white",
+                fontSize: "18px",
+                cursor: "pointer",
+              }}
+            >
+              ✕
+            </button>
+            {/* 說明內容 */}
+            <div style={{ display:"flex", gap: "40px", }}>
+              <div>
+                <h2 >核心概念</h2>
+                <p>
+                  把學習日記長成一棵「技能樹」 🌳 <br />
+                  每一篇日記就是一個技能點，累積後能清楚看到自己的知識版圖。
+                </p>
+                <br />
+                <h2 >設計重點</h2>
+                <ul>
+                  <li>輕鬆紀錄：用日記代替長篇筆記，一次只記一個技能重點，不容易有「作業感」。</li>
+                  <li>自訂地圖：技能可以自由命名、建立上下層關係，打造專屬的能力地圖。</li>
+                  <li>多面向成長：用 K-I-E 指標（知識 / 想法 / 經驗），避免只停在「聽懂」而沒有「實作」或「思考」。</li>
+                </ul>
+                <br />
+                <h2 >操作說明</h2>
+                <ul>
+                  <li>圓圈大小會依據 E-I-K 值增減。<br />外框顏色反映 E-I-K 組合。</li>
+                  <li>點擊左側的技能節點，可以查看右側說明與日記。<br />點擊空白處可清除選取。</li>
+                  <li>「整合技能」與「細化技能」只會出現在說明欄，不會在技能盤畫出。</li>
+                  <li>點擊「日記區」的日記可以展開日記內容。</li>
+                </ul>
+              </div>
+
+              <div style={{flex: 1, paddingRight: "20px",borderRight: "1px solid #566",}}></div>
+
+              <div>
+                <h2> Notion 畫面示意</h2>
+                <h3>  技能資料庫 </h3>
+                <img src="./img/skill.png" alt="" style={{width: "400px", height: "auto",}}/>
+                <br /><br />
+                <h3>  日記資料庫 </h3>
+                <img src="./img/dairy.png" alt="" style={{width: "400px", height: "auto",}}/>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-  );
+    </div>
+  );  // UI 的 return 尾巴
 }
 
 export default App;

@@ -66,3 +66,28 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.help-button {
+  background: transparent;
+  color: #aaa;
+  border: 2px solid #aaa;
+  font-size: 20px;
+  cursor: pointer;
+  outline: none; /* 移除預設點擊外框 */
+  padding: 4px 8px; /* 給點 padding，hover 的底色比較好看 */
+}
+
+/* hover 效果 */
+.help-button:hover {
+  border: 2px solid #fff;
+  color: #fff;
+  background: #00aaaa;
+  border-radius: 50%;
+  padding: 4px 8px; /* 給點 padding，hover 的底色比較好看 */
+}
+
+/* focus (彈窗開啟後的外框) */
+.help-button:focus {
+  outline: none;            /* 移除黃色外框 */
+  box-shadow: 0 0 0 2px #00aaaa; /* 如果你想要保留一點外框，就換成青色 */
+}
