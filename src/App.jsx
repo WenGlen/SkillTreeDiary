@@ -1,87 +1,166 @@
 import { useEffect, useState, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
+import skillImg from './img/skill.png';
+import dairyImg from './img/dairy.png';
+import SettingsModal from "./SettingsModal";
+
+async function queryNotionDB(apiKey, dbId, body = {}) {
+  const res = await fetch(`https://api.notion.com/v1/databases/${dbId}/query`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+      "Notion-Version": "2022-06-28",
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`Notion API error: ${res.status}`);
+  return res.json();
+}
+
 
 function App() {
+  const isApiMode = window.location.pathname.startsWith("/api");
+  
+  const [showSettings, setShowSettings] = useState(false);// 狀態：是否顯示設定彈窗
   const [roots, setRoots] = useState([]);
   const [placedNodes, setPlacedNodes] = useState([]);
   const [activeSkill, setActiveSkill] = useState(null);
   const [diarys, setDiarys] = useState([]);
   const [expandedDiaryId, setExpandedDiaryId] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
+  
+  console.log("pathname:", window.location.pathname, "isApiMode?", isApiMode);
+  // 第一次進入 API 模式且沒設定，就自動打開設定窗
+  useEffect(() => {
+    if (isApiMode) {
+      const hasKey = !!localStorage.getItem("notion_api_key");
+      const hasSkills = !!localStorage.getItem("skills_db_id");
+      const hasDiarys = !!localStorage.getItem("diarys_db_id");
+      setShowSettings(true); // 🚀 一開始就強制打開
+      //if (!hasKey || !hasSkills || !hasDiarys) setShowSettings(true);
+      
+    }
+  }, [isApiMode]);
 
 
-  // === 抓技能 DB ===
+
+
+// === 抓技能 DB ===
 useEffect(() => {
   async function fetchSkills() {
-    const res = await fetch("https://skill-tree-diary.vercel.app/api/skills");
-    const json = await res.json();
+    try {
+      let json;
 
-    const map = {};
-    json.results.forEach((item) => {
-      const id = item.id;
-      const parentId = item.properties?.["Parent-Skill"]?.relation?.[0]?.id || null;
+      if (isApiMode) {
+        // 使用者模式 → 打你的 proxy
+        const apiKey = localStorage.getItem("notion_api_key");
+        const skillsDbId = localStorage.getItem("skills_db_id");
+        if (!apiKey || !skillsDbId) return;
 
-      map[id] = {
-        id,
-        name: item.properties?.["Skill-Name"]?.title?.[0]?.plain_text || "未命名",
-        description: item.properties?.["Skill-Description"]?.rich_text?.[0]?.plain_text || "",
-        parentId,
-        isMerged: item.properties?.["Merge-State"]?.checkbox || false,
-        children: [],
-        mergedChildren: [], // ✅ 預先放
-      };
-    });
-
-    // 建立 parent-child 關聯
-    const rootsTemp = [];
-    Object.values(map).forEach((s) => {
-      if (s.parentId && map[s.parentId]) {
-        if (s.isMerged) {
-          map[s.parentId].mergedChildren.push(s);
-        } else {
-          map[s.parentId].children.push(s);
-        }
+        const res = await fetch("/api/notion", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: apiKey, databaseId: skillsDbId }),
+        });
+        json = await res.json();
       } else {
-        rootsTemp.push(s);
+        // 展示模式 → 用固定的 token/db
+        const res = await fetch("/api/notion", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            token: localStorage.getItem("notion_token"),
+            databaseId: localStorage.getItem("notion_skills_db"),
+          }),
+        });
+        json = await res.json();
       }
-    });
 
-    setRoots(rootsTemp);
+      console.log("技能 JSON：", json);
 
-    // ✅ 產生座標
-    const placed = placeNodes(rootsTemp, 1, 0, 2 * Math.PI);
-    setPlacedNodes(placed);
+      const map = {};
+      json.results.forEach((item) => {
+        const props = item.properties;
+        const id = item.id;
+        const parentId = props?.["Parent-Skill"]?.relation?.[0]?.id || null;
+
+        map[id] = {
+          id,
+          name: props?.["Skill-Name"]?.title?.[0]?.plain_text || "未命名",
+          description: (props?.["Skill-Description"]?.rich_text?.[0]?.plain_text || "").trim(),
+          parentId,
+          isMerged: props?.["Merge-State"]?.checkbox || false,
+          children: [],
+          mergedChildren: [],
+        };
+      });
+
+      const rootsTemp = [];
+      Object.values(map).forEach((s) => {
+        if (s.parentId && map[s.parentId]) {
+          if (s.isMerged) map[s.parentId].mergedChildren.push(s);
+          else map[s.parentId].children.push(s);
+        } else {
+          rootsTemp.push(s);
+        }
+      });
+
+      setRoots(rootsTemp);
+      const placed = placeNodes(rootsTemp, 1, 0, 2 * Math.PI);
+      setPlacedNodes(placed);
+    } catch (e) {
+      console.error(e);
+    }
   }
+
   fetchSkills();
-}, []);
+}, [isApiMode]);
 
 
+// === 抓日記 DB ===
+useEffect(() => {
+  async function fetchDiarys() {
+    try {
+      let json;
 
+      if (isApiMode) {
+        const apiKey = localStorage.getItem("notion_api_key");
+        const diarysDbId = localStorage.getItem("diarys_db_id");
+        if (!apiKey || !diarysDbId) return;
 
-  // === 抓日記 DB ===
-  useEffect(() => {
-    async function fetchDiarys() {
-      const res = await fetch("https://skill-tree-diary.vercel.app/api/diarys");
-      const json = await res.json();
+        const res = await fetch("/api/notion", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: apiKey, databaseId: diarysDbId }),
+        });
+        json = await res.json();
+      } else {
+        const res = await fetch("/api/notion", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            token: localStorage.getItem("notion_token"),
+            databaseId: localStorage.getItem("notion_diarys_db"),
+          }),
+        });
+        json = await res.json();
+      }
+
+      console.log("日記 JSON：", json);
 
       const mapped = json.results.map((item) => {
-        const props = item.properties;                 // ✅ 只宣告一次
-        const kieStr = props["K-I-E"]?.rich_text?.[0]?.plain_text ?? "0-0-0";
-
-        // 解析 K-I-E，並處理空白/非數字
-        const [k = 0, i = 0, e = 0] = kieStr
-          .split("-")
-          .map((s) => Number(String(s).trim()) || 0);
+        const props = item.properties;
+        const eikStr = props["E-I-K"]?.rich_text?.[0]?.plain_text ?? "0-0-0";
+        const [e = 0, i = 0, k = 0] = eikStr.split("-").map((s) => Number(String(s).trim()) || 0);
 
         return {
           id: item.id,
           slug: props["diary-slug"]?.rich_text?.[0]?.plain_text || "",
           title: props["Title"]?.title?.[0]?.plain_text || "未命名",
-          content: (props["Content"]?.rich_text ?? [])
-            .map((t) => t.plain_text)
-            .join(""),
+          content: (props["Content"]?.rich_text ?? []).map((t) => t.plain_text).join("\n"),
           date: props["Created Date"]?.created_time || "",
-          kie: { k, i, e },                               // ✅ 統一用 e/i/k
+          eik: { e, i, k },
           linkName: props["Link-Name"]?.rich_text?.[0]?.plain_text || "",
           linkUrl: props["Link-URL"]?.url || "",
           skills: (props["Skills"]?.relation ?? []).map((rel) => rel.id),
@@ -90,10 +169,14 @@ useEffect(() => {
       });
 
       setDiarys(mapped.filter((d) => !d.invisible));
+    } catch (e) {
+      console.error(e);
     }
+  }
 
-    fetchDiarys();
-  }, []);
+  fetchDiarys();
+}, [isApiMode]);
+
 
 const centerX = 400;
 const centerY = 400;
@@ -284,6 +367,22 @@ function getNonMergedDescendants(node) {
   return (
     <div>
       <h1 style={{ textAlign: "center", marginTop: "20px",marginBottom: "20px" }}>Skill Tree Diary</h1>
+      {/* 右上角設定按鈕（只在 API 模式顯示）*/}
+      {isApiMode && (
+        <button
+          onClick={() => setShowSettings(true)}
+          style={{
+            position: "fixed", top: 10, right: 10,
+            background: "transparent", border: "none",
+            color: "#fff", fontSize: 20, cursor: "pointer", zIndex: 1100
+          }}
+          title="Notion API 設定"
+        >
+          ⚙️
+        </button>
+      )}
+      <SettingsModal show={showSettings} onClose={() => setShowSettings(false)} />
+
       
       <div style={{ width: "100vw", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", }}>
       <div style={{display: "flex" }}>
@@ -560,7 +659,7 @@ function getNonMergedDescendants(node) {
           </div>
         </div>
       </div>
-      <p style={{ textAlign: "center" ,color: "#999" }}>Prototype v1-2.0</p>
+      <p style={{ textAlign: "center" ,color: "#999" }}>Prototype v1-2.2</p>
     
 
       {/* 左下角的「？」按鈕 */}
@@ -657,10 +756,10 @@ function getNonMergedDescendants(node) {
               <div>
                 <h2> Notion 畫面示意</h2>
                 <h3>  技能資料庫 </h3>
-                <img src="./img/skill.png" alt="" style={{width: "400px", height: "auto",}}/>
+                <img src={skillImg} alt="" style={{width: "400px", height: "auto",}}/>
                 <br /><br />
                 <h3>  日記資料庫 </h3>
-                <img src="./img/dairy.png" alt="" style={{width: "400px", height: "auto",}}/>
+                <img src={dairyImg} alt="" style={{width: "400px", height: "auto",}}/>
               </div>
 
             </div>
